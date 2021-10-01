@@ -1,8 +1,8 @@
 import calculateWinner from "./calculateWinner";
+import { Board } from "../types"
 
-export default async function ArtificialIntelligence(handleClick: Function, board: ("X" | "O" | null)[], xIsNext: boolean) {
+export default async function ArtificialIntelligence(handleClick: Function, board: Board, xIsNext: boolean) {
     if (board.indexOf(null) === -1) return;
-    await sleep(500)
     const winIndex = calculateWinMoves(board, xIsNext)
     const blockIndex = calculateBlockMoves(board, xIsNext)
     if (winIndex !== undefined) handleClick(winIndex)
@@ -10,7 +10,7 @@ export default async function ArtificialIntelligence(handleClick: Function, boar
     else handleClick(randomValidSpot(board))
 }
 
-const calculateWinMoves = (board: ("X" | "O" | null)[], xIsNext: boolean): number | undefined => {
+const calculateWinMoves = (board: Board, xIsNext: boolean): number | undefined => {
     const player = xIsNext ? "X" : "O";
     for (let index = 0; index < board.length; index++) {
         if (board[index] === null) {
@@ -22,11 +22,11 @@ const calculateWinMoves = (board: ("X" | "O" | null)[], xIsNext: boolean): numbe
     }
 }
 
-const calculateBlockMoves = (board: ("X" | "O" | null)[], xIsNext: boolean): number | undefined => {
+const calculateBlockMoves = (board: Board, xIsNext: boolean): number | undefined => {
     return calculateWinMoves(board, !xIsNext)
 }
 
-const randomValidSpot = (board: ("X" | "O" | null)[]): number => {
+const randomValidSpot = (board: Board): number => {
     let i;
 
     do {
@@ -35,5 +35,3 @@ const randomValidSpot = (board: ("X" | "O" | null)[]): number => {
 
     return i;
 }
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
